@@ -2101,7 +2101,9 @@ EOT;
                 if ($PAGE->pagetype != "mod-quiz-attempt") {
                     $retval .= '<a href=' . $CFG->wwwroot . '>';
                 }
-                $retval .= '<img src=' . $PAGE->theme->setting_file_url('logo', 'logo') . ' alt="logo" id="logo" />';
+                $retval .= '<img src=' . $PAGE->theme->setting_file_url('logo', 'logo') . ' id="logo"
+                aria-label="home"
+                alt="' . format_string($SITE->fullname). '"  />';
                 if ($PAGE->pagetype != "mod-quiz-attempt") {
                     $retval .= '</a>';
                 }
