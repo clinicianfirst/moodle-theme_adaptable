@@ -144,6 +144,10 @@ $defaultview = $PAGE->theme->settings->viewselect;
 if ($defaultview == 1 && $setfull == "") {
     $setfull = "fullin";
 }
+// User icon.
+$userpic = $OUTPUT->user_picture($USER, array('link' => false, 'alttext' => false, 'size' => 50, 'class' => 'userpicture'));
+// User name.
+$username = format_string(fullname($USER));
 
 // HTML header.
 echo $OUTPUT->doctype();
@@ -343,21 +347,18 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
                             ?>
 
                             <li class="nav-item dropdown ml-3 ml-md-4 mr-2 mr-md-0">
-                                <a class="nav-link dropdown-toggle my-auto" href="javascript:void(0);"
+                                <a class="nav-link dropdown-toggle" href="#"
                                     id="navbarAboveHeaderDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="true">
+                                    aria-haspopup="true" aria-expanded="false" title="<?php echo $username; ?>">
 
-                                <?php
-                                // Show user avatar.
-                                $userpic = $OUTPUT->user_picture($USER, array('link' => false,
-                                                                              'size' => 80, 'class' => 'userpicture'));
-                                echo $userpic;
-                                ?>
+                                    <?php
+                                    // Show user avatar.
+                                    echo $userpic;
+                                    ?>
 
-                                <span class="d-none d-md-inline-block">
-                                <?php echo fullname($USER); ?>
-                                <!-- span class="fa fa-angle-down"></span -->
-                                </span>
+                                    <span class="d-none d-md-inline-block">
+                                        <?php echo $username; ?>
+                                    </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarAboveHeaderDropdownMenuLink">
                                     <?php echo $OUTPUT->user_profile_menu() ?>
@@ -518,7 +519,7 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
                             if ($PAGE->theme->settings->displaylogin == 'box') {
                                 // Login button.
                         ?>
-                        <form id="pre-login-form" class="form-inline my-auto m-1" 
+                        <form id="pre-login-form" class="form-inline my-auto m-1"
                             action="<?php p($wwwroot) ?>/login/index.php" method="post">
                         <input type="hidden" name="logintoken" value="<?php echo s(\core\session\manager::get_login_token()); ?>" />
                         <input type="text" name="username"
@@ -546,15 +547,12 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
                             ?>
 
                             <li class="nav-item dropdown ml-3 ml-md-2 mr-2 mr-md-0 my-auto">
-                                <a class="nav-link dropdown-toggle" href="javascript:void(0);"
+                                <a class="nav-link dropdown-toggle" href="#"
                                     id="navbarAboveHeaderDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="true">
+                                    aria-haspopup="true" aria-expanded="false" title="<?php echo $username ?>">
 
                                 <?php
-                                // Show user avatar.
-                                $userpic = $OUTPUT->user_picture($USER, array('link' => false,
-                                                                              'size' => 80, 'class' => 'userpicture'));
-                                echo $userpic;
+                                    echo $userpic;
                                 ?>
 
                                 </a>
