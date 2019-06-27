@@ -107,25 +107,15 @@ if (!empty($PAGE->theme->settings->infobox2)) {
             ?>
         </section>
         <?php
-            $classes = '';
-
-            // Hide sidebar on mobile.
-            if (!empty($PAGE->theme->settings->smallscreenhidesidebar)) {
-                 $classes = ' d-none d-md-block ';
-            }
-            echo $OUTPUT->blocks('side-post', $regions['blocks'] . $classes);
-        ?>
-    </section>
-    <?php
         $classes = '';
 
         // Hide sidebar on mobile.
-    if (!empty($PAGE->theme->settings->smallscreenhidesidebar)) {
-         $classes = ' d-none d-md-block d-print-none ';
-    }
-    echo $OUTPUT->blocks('side-post', $regions['blocks'] . $classes);
-    ?>
-</div>
+        if (!empty($PAGE->theme->settings->smallscreenhidesidebar)) {
+            $classes = ' d-none d-md-block ';
+        }
+        echo $OUTPUT->blocks('side-post', $regions['blocks'] . $classes);
+        ?>
+    </div>
 
 <?php
 

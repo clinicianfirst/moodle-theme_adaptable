@@ -2100,13 +2100,18 @@ EOT;
         if (((theme_adaptable_is_mobile()) && ($hidelogomobile == 1)) || (theme_adaptable_is_desktop())) {
             if (!empty($PAGE->theme->settings->logo)) {
                 // Logo.
-                $retval .= '<div id="logocontainer">';
-                // Remove link to home page in logo when in a quiz page.
-                if ($PAGE->pagetype != "mod-quiz-attempt") {
-                    $retval .= '<a href=' . $CFG->wwwroot . '>';
+                $retval .= '<div class="p-2 bd-highlight">';
+                $logo = '<img src=' . $PAGE->theme->setting_file_url('logo', 'logo') . ' id="logo" alt="" />';
+
+                // Exception - Quiz page - logo is not a link to site homepage.
+                if ($PAGE->pagetype == "mod-quiz-attempt") {
+                    $retval .=  $logo;
                 }
-                $retval .= '<img src=' . $PAGE->theme->setting_file_url('logo', 'logo') . ' alt="logo" id="logo" />';
-                if ($PAGE->pagetype != "mod-quiz-attempt") {
+
+                // Standard - Output the logo as a link to site homepage.
+                else {
+                    $retval .= '<a href=' . $CFG->wwwroot . ' aria-label="home" title="' . format_string($SITE->fullname). '">';
+                    $retval .=  $logo;
                     $retval .= '</a>';
                 }
                 $retval .= '</div>';
@@ -2115,7 +2120,8 @@ EOT;
 
         $hidecoursetitlemobile = $PAGE->theme->settings->hidecoursetitlemobile;
 
-        $coursetitlemaxwidth = (!empty($PAGE->theme->settings->coursetitlemaxwidth) ? $PAGE->theme->settings->coursetitlemaxwidth : 0);
+        $coursetitlemaxwidth =
+            (!empty($PAGE->theme->settings->coursetitlemaxwidth) ? $PAGE->theme->settings->coursetitlemaxwidth : 0);
 
         // If it is a mobile and the site title/course is not hidden or it is a desktop then we display the site title / course.
         if (((theme_adaptable_is_mobile()) && ($hidecoursetitlemobile == 1)) || (theme_adaptable_is_desktop())) {
@@ -2146,19 +2152,22 @@ EOT;
                 switch ($PAGE->theme->settings->enableheading) {
                     case 'fullname':
                         // Full Course Name.
-                        $retval .= '<div id="sitetitle"><h1>' . format_string($coursetitle) . '<h1></div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"><h1>'
+                                . format_string($coursetitle) . '<h1></div>';
                         break;
 
                     case 'shortname':
                         // Short Course Name.
-                        $retval .= '<div id="sitetitle"><h1>' . format_string($coursetitle) . '</h1></div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"><h1>'
+                                . format_string($coursetitle) . '</h1></div>';
                         break;
 
                     default:
                         // None.
                         $header = theme_adaptable_remove_site_fullname($PAGE->theme->settings->sitetitletext);
                         $sitetitlehtml = $PAGE->theme->settings->sitetitletext;
-                        $retval .= '<div id="sitetitle">' . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"s>'
+                                . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
 
                         break;
                 }
@@ -2169,7 +2178,8 @@ EOT;
                 switch ($PAGE->theme->settings->sitetitle) {
                     case 'default':
                         // Default site title.
-                        $retval .= '<div id="sitetitle"><h1>' . format_string($SITE->fullname) . '</h1></div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"><h1>'
+                                    . format_string($SITE->fullname) . '</h1></div>';
                         break;
 
                     case 'custom':
@@ -2180,7 +2190,8 @@ EOT;
                             $header = format_string($header);
                             $PAGE->set_heading($header);
 
-                            $retval .= '<div id="sitetitle">' . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
+                            $retval .= '<div id="sitetitle" class="p-2 bd-highlight">'
+                                        . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
                         }
                 }
             }
@@ -3186,7 +3197,7 @@ EOT;
 
         if ((!empty($output)) && ($region == 'side-post')) {
             $output = html_writer::tag('div',
-                html_writer::tag('i', '', array('class' => 'fa fa-chevron-left', 'aria-hidden' => 'true')),
+                html_writer::tag('i', '', array('class' => 'fa fa-3x fa-angle-left', 'aria-hidden' => 'true')),
                 array('id' => 'showsidebaricon')).$output;
             $this->page->requires->js_call_amd('theme_adaptable/showsidebar', 'init');
         }
