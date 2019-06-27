@@ -2100,7 +2100,7 @@ EOT;
         if (((theme_adaptable_is_mobile()) && ($hidelogomobile == 1)) || (theme_adaptable_is_desktop())) {
             if (!empty($PAGE->theme->settings->logo)) {
                 // Logo.
-                $retval .= '<div id="p-2 bd-highlight">';
+                $retval .= '<div class="p-2 bd-highlight">';
                 $logo = '<img src=' . $PAGE->theme->setting_file_url('logo', 'logo') . ' id="logo" alt="" />';
 
                 // Exception - Quiz page - logo is not a link to site homepage.
