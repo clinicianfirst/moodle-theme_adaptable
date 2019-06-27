@@ -1633,6 +1633,9 @@ $string['show'] = 'Show';
 // Navbar Links menu *********************************.
 $string['linksmenu'] = 'Links Menu';
 
+// Navbar user menu *********************************.
+$string['usermenu'] = 'User menu';
+
 // Save / Discard button text *********************************.
 $string['savebuttontext'] = 'Save changes';
 $string['discardbuttontext'] = 'Cancel';
