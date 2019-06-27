@@ -1225,7 +1225,7 @@ EOT;
         if (!empty($blocksarray)) {
 
             $classes = (array)$classes;
-            $retval .= '<aside class="' . join(' ', $classes) . '">';
+            $missingblocks = '';
 
             foreach ($blocksarray as $block) {
 
@@ -1256,22 +1256,24 @@ EOT;
                                 // Check if the block actually has content to display before displaying.
                                 if (strip_tags($missingblock)) {
                                     if ($adminediting) {
-                                        $retval .= '<em>ORPHANED BLOCK - Originally displays in: <strong>' .
+                                        $missingblocks .= '<em>ORPHANED BLOCK - Originally displays in: <strong>' .
                                                 get_string('region-' . $blockclass, 'theme_adaptable') .'</strong></em>';
 
                                     }
-                                    $retval .= $missingblock;
+                                    $missingblocks .= $missingblock;
                                 }
 
                             }
                         } // End foreach.
                     }
-
                 }
-
             }
-            $retval .= '</aside>';
 
+            if (!empty($missingblocks)) {
+                $retval .= '<aside class="' . join(' ', $classes) . '">';
+                $retval .= $missingblocks;
+                $retval .= '</aside>';
+            }
         }
 
         return $retval;
@@ -2098,7 +2100,7 @@ EOT;
         if (((theme_adaptable_is_mobile()) && ($hidelogomobile == 1)) || (theme_adaptable_is_desktop())) {
             if (!empty($PAGE->theme->settings->logo)) {
                 // Logo.
-                $retval .= '<div id="logocontainer">';
+                $retval .= '<div id="p-2 bd-highlight">';
                 $logo = '<img src=' . $PAGE->theme->setting_file_url('logo', 'logo') . ' id="logo" alt="" />';
 
                 // Exception - Quiz page - logo is not a link to site homepage.
@@ -2118,7 +2120,8 @@ EOT;
 
         $hidecoursetitlemobile = $PAGE->theme->settings->hidecoursetitlemobile;
 
-        $coursetitlemaxwidth = (!empty($PAGE->theme->settings->coursetitlemaxwidth) ? $PAGE->theme->settings->coursetitlemaxwidth : 0);
+        $coursetitlemaxwidth =
+            (!empty($PAGE->theme->settings->coursetitlemaxwidth) ? $PAGE->theme->settings->coursetitlemaxwidth : 0);
 
         // If it is a mobile and the site title/course is not hidden or it is a desktop then we display the site title / course.
         if (((theme_adaptable_is_mobile()) && ($hidecoursetitlemobile == 1)) || (theme_adaptable_is_desktop())) {
@@ -2149,19 +2152,22 @@ EOT;
                 switch ($PAGE->theme->settings->enableheading) {
                     case 'fullname':
                         // Full Course Name.
-                        $retval .= '<div id="sitetitle"><h1>' . format_string($coursetitle) . '<h1></div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"><h1>'
+                                . format_string($coursetitle) . '<h1></div>';
                         break;
 
                     case 'shortname':
                         // Short Course Name.
-                        $retval .= '<div id="sitetitle"><h1>' . format_string($coursetitle) . '</h1></div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"><h1>'
+                                . format_string($coursetitle) . '</h1></div>';
                         break;
 
                     default:
                         // None.
                         $header = theme_adaptable_remove_site_fullname($PAGE->theme->settings->sitetitletext);
                         $sitetitlehtml = $PAGE->theme->settings->sitetitletext;
-                        $retval .= '<div id="sitetitle">' . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"s>'
+                                . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
 
                         break;
                 }
@@ -2172,7 +2178,8 @@ EOT;
                 switch ($PAGE->theme->settings->sitetitle) {
                     case 'default':
                         // Default site title.
-                        $retval .= '<div id="sitetitle"><h1>' . format_string($SITE->fullname) . '</h1></div>';
+                        $retval .= '<div id="sitetitle" class="p-2 bd-highlight"><h1>'
+                                    . format_string($SITE->fullname) . '</h1></div>';
                         break;
 
                     case 'custom':
@@ -2183,7 +2190,8 @@ EOT;
                             $header = format_string($header);
                             $PAGE->set_heading($header);
 
-                            $retval .= '<div id="sitetitle">' . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
+                            $retval .= '<div id="sitetitle" class="p-2 bd-highlight">'
+                                        . format_text($sitetitlehtml, FORMAT_HTML) . '</div>';
                         }
                 }
             }
@@ -2991,6 +2999,87 @@ EOT;
     }
 
     /**
+     * Mobile settings menu.
+     *
+     * TODO: Possibly make a Mustache template for all of the menu?
+     *
+     * @return string Markup.
+     */
+    public function context_mobile_settings_menu() {
+        $output = '';
+
+        $showcourseitems = false;
+        $context = $this->page->context;
+        $items = $this->page->navbar->get_items();
+        $currentnode = end($items);
+
+        // We are on the course home page.
+        if (($context->contextlevel == CONTEXT_COURSE) &&
+            !empty($currentnode) &&
+            ($currentnode->type == navigation_node::TYPE_COURSE || $currentnode->type == navigation_node::TYPE_SECTION)) {
+            $showcourseitems = true;
+        }
+
+        $courseformat = course_get_format($this->page->course);
+        // This is a single activity course format, always show the course menu on the activity main page.
+        if ($context->contextlevel == CONTEXT_MODULE &&
+            !$courseformat->has_view_page()) {
+
+            $this->page->navigation->initialise();
+            $activenode = $this->page->navigation->find_active_node();
+            // If the settings menu has been forced then show the menu.
+            if ($this->page->is_settings_menu_forced()) {
+                $showcourseitems = true;
+            } else if (!empty($activenode) && ($activenode->type == navigation_node::TYPE_ACTIVITY ||
+                $activenode->type == navigation_node::TYPE_RESOURCE)) {
+
+                /* We only want to show the menu on the first page of the activity.  This means
+                   the breadcrumb has no additional nodes. */
+                if ($currentnode && ($currentnode->key == $activenode->key && $currentnode->type == $activenode->type)) {
+                    $showcourseitems = true;
+                }
+            }
+        }
+
+        if ($showcourseitems) {
+            $settingsnode = $this->page->settingsnav->find('courseadmin', navigation_node::TYPE_COURSE);
+            if ($settingsnode) {
+                $displaykeys = array('turneditingonoff', 'editsettings'); // In the order we want.
+                $displaykeyscount = count($displaykeys);
+                $displaynodes = array();
+                foreach ($settingsnode->children as $node) {
+                    if ($node->display) {
+                        if (in_array($node->key, $displaykeys)) {
+                            $displaynodes[$node->key] = $node;
+                        }
+                        if (count($displaynodes) == $displaykeyscount) {
+                            break;
+                        }
+                    }
+                }
+
+                foreach ($displaykeys as $displaykey) { // Ensure order.
+                    if (!empty($displaynodes[$displaykey])) {
+                        $currentnode = $displaynodes[$displaykey];
+                        $output .= '<a class="list-group-item list-group-item-action " href="'.$currentnode->action.'">';
+                        $output .= '<div class="m-l-0">';
+                        $output .= '<div class="media">';
+                        $output .= '<span class="media-left">';
+                        $output .= $this->render($currentnode->icon);
+                        $output .= '</span>';
+                        $output .= '<span class="media-body ">'.$currentnode->text.'</span>';
+                        $output .= '</div>';
+                        $output .= '</div>';
+                        $output .= '</a >';
+                    }
+                }
+            }
+        }
+
+        return $output;
+    }
+
+    /**
      * This is an optional menu that can be added to a layout by a theme. It contains the
      * menu for the most specific thing from the settings block. E.g. Module administration. Lifted from Boost.
      *
@@ -3097,4 +3186,22 @@ EOT;
         return $skipped;
     }
 
+    /**
+     * Output all the blocks in a particular region.
+     *
+     * @param string $region the name of a region on this page.
+     * @return string the HTML to be output.
+     */
+    public function blocks_for_region($region) {
+        $output = parent::blocks_for_region($region);
+
+        if ((!empty($output)) && ($region == 'side-post')) {
+            $output = html_writer::tag('div',
+                html_writer::tag('i', '', array('class' => 'fa fa-3x fa-angle-left', 'aria-hidden' => 'true')),
+                array('id' => 'showsidebaricon')).$output;
+            $this->page->requires->js_call_amd('theme_adaptable/showsidebar', 'init');
+        }
+
+        return $output;
+    }
 }

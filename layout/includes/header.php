@@ -213,7 +213,8 @@ echo $OUTPUT->standard_head_html() ?>
     ?>
 </head>
 
-<body <?php
+<body
+    <?php
     // Choose the header style.  There styles available are:
     // "style1"  (original header)
     // "style2"  (2 row header).
@@ -224,7 +225,8 @@ echo $OUTPUT->standard_head_html() ?>
         $adaptableheaderstyle = $PAGE->theme->settings->headerstyle;
     }
 
-    echo $OUTPUT->body_attributes(array('two-column', $setzoom, 'header-'.$adaptableheaderstyle)); ?>>
+    echo $OUTPUT->body_attributes(array('two-column', $setzoom, 'header-'.$adaptableheaderstyle));
+    ?>>
 
 <?php
 echo $OUTPUT->standard_top_of_body_html();
@@ -380,62 +382,74 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
     ?>
 
     <div id="page-header" class="container">
+        <div class="row">
 
-    <?php
-    // Site title or logo.
-    if (!$hidesitetitle) {
-        echo $OUTPUT->get_logo_title();
-    }
-    ?>
-
-    <?php
-    // Remove Search Box or Social icons in Quiz pages even if they don't use SEB.
-    if ($PAGE->pagetype != "mod-quiz-attempt") {
-        // Social icons.
-        if ($PAGE->theme->settings->socialorsearch == 'social') {
-            // If it is a mobile and the social icons are not hidden or it is a desktop then load and show the social icons.
-            if (((theme_adaptable_is_mobile()) && ($hidesocialmobile == 1)) || (theme_adaptable_is_desktop())) {
-                ?>
-                <div class="socialbox pull-right">
-                    <?php
-                    echo $OUTPUT->socialicons();
-                    ?>
-                </div>
-                <?php
-            }
-        }
-            ?>
-
+        <div class="d-none d-lg-block col-lg-4">
         <?php
-        // Search box.
-        if ( (!$hidesitetitle) && ($PAGE->theme->settings->socialorsearch == 'search') ) { ?>
-            <div class="searchbox d-none d-lg-block">
-                <form action="<?php echo $wwwroot; ?>/course/search.php">
-                    <label class="hidden" for="search-1" style="display: none;"><?php echo get_string("searchcourses")?></label>
-                    <div class="search-box grey-box bg-white clear-fix">
-                        <input placeholder="<?php echo get_string("searchcourses", "theme_adaptable"); ?>"
-                                accesskey="6"
-                                class="search_tour bg-white no-border left search-box__input ui-autocomplete-input"
-                                type="text"
-                                name="search"
-                                id="search-1"
-                                autocomplete="off">
-                                <button title="<?php echo get_string("searchcourses", "theme_adaptable")?>"
-                                        type="submit" class="no-border bg-white pas search-box__button">
-                                        <abbr class="fa fa-search" title="<?php echo get_string("searchcourses", "theme_adaptable");?>">
-                                        </abbr>
-                                </button>
-                    </div>
-                </form>
-            </div>
-        <?php
+        // Site title or logo.
+        if (!$hidesitetitle) {
+            echo '<div class="d-flex align-items-start bd-highlight">';
+            echo $OUTPUT->get_logo_title();
+            echo '</div>';
         }
-    }
         ?>
-
-        <div id="course-header">
-            <?php echo $OUTPUT->course_header(); ?>
         </div>
+
+        <div class="col-lg-8 p-0 my-auto">
+            <?php
+            // Remove Search Box or Social icons in Quiz pages even if they don't use SEB.
+            if ($PAGE->pagetype != "mod-quiz-attempt") {
+                // Social icons.
+                if ($PAGE->theme->settings->socialorsearch == 'social') {
+                    // If it is a mobile and the social icons are not hidden or it is a desktop then load and show the social icons.
+                    if (((theme_adaptable_is_mobile()) && ($hidesocialmobile == 1)) || (theme_adaptable_is_desktop())) {
+                        ?>
+                        <div class="socialbox pull-right">
+                            <?php
+                            echo $OUTPUT->socialicons();
+                            ?>
+                        </div>
+                        <?php
+                    }
+                }
+                    ?>
+
+                <?php
+                // Search box.
+                if ( (!$hidesitetitle) && ($PAGE->theme->settings->socialorsearch == 'search') ) { ?>
+                    <div class="searchbox d-none d-lg-block">
+                        <form action="<?php echo $wwwroot; ?>/course/search.php">
+                            <label class="hidden" for="search-1" style="display: none;"><?php echo get_string("searchcourses")?>
+                            </label>
+                            <div class="search-box grey-box bg-white clear-fix">
+                                <input placeholder="<?php echo get_string("searchcourses", "theme_adaptable"); ?>"
+                                        accesskey="6"
+                                        class="search_tour bg-white no-border left search-box__input ui-autocomplete-input"
+                                        type="text"
+                                        name="search"
+                                        id="search-1"
+                                        autocomplete="off">
+                                        <button title="<?php echo get_string("searchcourses", "theme_adaptable")?>"
+                                                type="submit" class="no-border bg-white pas search-box__button">
+                                                <abbr class="fa fa-search"
+                                                    title="<?php echo get_string("searchcourses", "theme_adaptable");?>">
+                                                </abbr>
+                                        </button>
+                            </div>
+                        </form>
+                    </div>
+                <?php
+                }
+            }
+                ?>
+
+                <div id="course-header">
+                    <?php echo $OUTPUT->course_header(); ?>
+                </div>
+
+            </div>
+            </div>
+
     </div>
 
     <?php
@@ -444,7 +458,7 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
 
 <?php endif; // End header style 1. ?>
 
-<?php // Begin header style 2.  This includes a css class ID called "header2". ?>
+<?php // Begin header style 2 (2 row header).  This includes a css class ID called "header2". ?>
 <?php if ($adaptableheaderstyle == "style2") : ?>
 
     <header id="adaptable-page-header-wrapper" <?php echo $headerbg; ?> >
@@ -452,7 +466,9 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
     <div id="header2" class="container">
 
       <div class="row">
-        <div class="d-none d-lg-block col-lg-3">
+
+        <div class="d-none d-lg-block col-lg-4">
+        <div class="d-flex align-items-start bd-highlight">
 
             <?php
             // Site title or logo.
@@ -465,8 +481,9 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
                 <?php echo $OUTPUT->course_header(); ?>
             </div>
         </div>
+        </div>
 
-        <div class="col-lg-9 p-0">
+        <div class="col-lg-8 p-0 my-auto">
 
             <nav class="navbar navbar-expand btco-hover-menu">
 
@@ -598,12 +615,12 @@ if (
 
             <?php
             if (empty($PAGE->theme->settings->disablecustommenu)) {
-                    echo $OUTPUT->custom_menu_drawer();
+                echo $OUTPUT->custom_menu_drawer();
             }
             ?>
             <?php
             if ($PAGE->theme->settings->enabletoolsmenus) {
-                    echo $OUTPUT->tools_menu('tools-menu-drawer');
+                echo $OUTPUT->tools_menu('tools-menu-drawer');
             }
             ?>
 
@@ -612,15 +629,14 @@ if (
     </nav>
 
     <nav class="list-group m-t-1">
-        <a class="list-group-item list-group-item-action " href="<?php echo $CFG->wwwroot .
-        '/admin/search.php'; ?>" data-key="sitesettings" data-isexpandable="0" data-indent="0" data-showdivider="1" data-type="71"
-        data-nodetype="1" data-collapse="0" data-forceopen="0" data-isactive="0" data-hidden="0" data-preceedwithhr="0">
+        <?php echo $OUTPUT->context_mobile_settings_menu(); ?>
+        <a class="list-group-item list-group-item-action " href="<?php echo $CFG->wwwroot.'/admin/search.php'; ?>">
             <div class="m-l-0">
                 <div class="media">
                     <span class="media-left">
-                        <i class="icon fa fa-wrench fa-fw " aria-hidden="true"></i>
+                        <i class="icon fa fa-wrench fa-fw" aria-hidden="true"></i>
                     </span>
-                    <span class="media-body ">Site administration</span>
+                    <span class="media-body "><?php echo get_string('administrationsite'); ?></span>
                 </div>
             </div>
         </a>
