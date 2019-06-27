@@ -81,6 +81,18 @@ if (!empty($PAGE->theme->settings->headerbgimage)) {
                          background-position: 0 0; background-repeat: no-repeat; background-size: cover;"';
 }
 
+// User image and name in both headerstyle settings.
+$userpic = '';
+$username = '';
+// Image and name only display when a user is logged in.
+if (isloggedin()) {
+    // User icon.
+    $userpic = $OUTPUT->user_picture($USER, array('link' => false, 'alttext' => false, 'size' => 50, 'class' => 'userpicture'));
+    // User name.
+    $username = format_string(fullname($USER));
+}
+
+
 // Select fonts used.
 $fontname = '';
 $fontheadername = '';
@@ -144,10 +156,6 @@ $defaultview = $PAGE->theme->settings->viewselect;
 if ($defaultview == 1 && $setfull == "") {
     $setfull = "fullin";
 }
-// User icon.
-$userpic = $OUTPUT->user_picture($USER, array('link' => false, 'alttext' => false, 'size' => 50, 'class' => 'userpicture'));
-// User name.
-$username = format_string(fullname($USER));
 
 // HTML header.
 echo $OUTPUT->doctype();
@@ -248,6 +256,7 @@ if (((theme_adaptable_is_mobile()) && ($hidealertsmobile == 1)) || (theme_adapta
 
 // Background image in Header.
 ?>
+
 
 <?php if ($adaptableheaderstyle == "style1") : ?>
 
