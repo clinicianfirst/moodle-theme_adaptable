@@ -737,8 +737,8 @@ if ($shownavbar) {
                         $pageheadingbutton = $OUTPUT->page_heading_button();
                         if (!empty($pageheadingbutton)) {
                         ?>
-                        <li class="nav-item mx-0">
-                             <div id="edittingbutton" class="breadcrumb-button">
+                        <li class="nav-item mx-0 my-auto">
+                             <div id="edittingbutton">
                                 <?php echo $pageheadingbutton; ?>
                             </div>
                         </li>
@@ -772,7 +772,7 @@ if ($shownavbar) {
                             echo html_writer::start_tag('div',
                                 array('id' => 'zoominicon', 'class' => $zoomside. ' nav-link', 'title' => $zoominicontitle,
                                     'data-hidetitle' => $hidetitle, 'data-showtitle' => $showtitle));
-                            echo html_writer::tag('i', '', array('class' => 'fa fa-2x fa-'.$icontype, 'aria-hidden' => 'true'));
+                            echo html_writer::tag('i', '', array('class' => 'fa fa-lg fa-'.$icontype, 'aria-hidden' => 'true'));
                             if ($PAGE->theme->settings->enableshowhideblockstext) {
                                 echo html_writer::tag('span', $zoominicontitle, array('class' => 'showhideblocksdesc'));
                             }

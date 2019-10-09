@@ -131,6 +131,10 @@ class renderer extends \core_user\output\myprofile\renderer {
             $contactcategory->add_node($node);
         }
 
+        $node = new node('contact', 'userpreferences', '', null, null,
+            $this->userpreferences());
+        $contactcategory->add_node($node);
+
         if (!empty($this->user->userdetails['email'])) {
             $node = new node('contact', 'email', '', null, null,
                 $this->user->userdetails['email']);
@@ -336,6 +340,19 @@ class renderer extends \core_user\output\myprofile\renderer {
         return $output;
     }
 
+    protected function userpreferences() {
+        global $USER;
+
+        $output = '';
+        if ($USER->id == $this->user->id) {
+            $output = html_writer::start_tag('li', array('class' => 'contentnode adaptableuserpreferences'));
+            $output .= html_writer::link(new \moodle_url('/user/preferences.php'), get_string('preferences', 'moodle'));
+            $output .= html_writer::end_tag('li');
+        }
+
+        return $output;
+    }
+
     protected function create_aboutme($tree) {
         $aboutme = new category('aboutme', get_string('aboutme', 'theme_adaptable'));
         $descriptionempty = false;
@@ -411,6 +428,38 @@ class renderer extends \core_user\output\myprofile\renderer {
         return $category;
     }
 
+    protected function userprofilefields() {
+        $output = '';
+
+        if (!empty($this->user->userdetails['customfields'])) {
+            $customcoursetitleprofilefield = get_config('theme_adaptable', 'customcoursetitle');
+            $customcoursesubtitleprofilefield = get_config('theme_adaptable', 'customcoursesubtitle');
+
+            $customfieldscat = new category('customfields', get_string('customfields', 'theme_adaptable'));
+
+            $hasnodes = false;
+            foreach ($this->user->userdetails['customfields'] as $cfield) {
+                if ((!empty($customcoursetitleprofilefield)) && ($cfield['shortname'] == $customcoursetitleprofilefield)) {
+                    continue;
+                }
+                if ((!empty($customcoursesubtitleprofilefield)) && ($cfield['shortname'] == $customcoursesubtitleprofilefield)) {
+                    continue;
+                }
+                $node = new node('customfields', $cfield['shortname'], $cfield['name'], null, null, $cfield['value']);
+                $customfieldscat->add_node($node);
+                $hasnodes = true;
+            }
+
+            if ($hasnodes) {
+                $output .= html_writer::start_tag('div', array('class' => 'col-12 '.$customfieldscat->name));
+                $output .= $this->render($customfieldscat);
+                $output .= html_writer::end_tag('div');
+            }
+        }
+
+        return $output;
+    }
+
     protected function create_editprofile() {
         $editprofile = new category('editprofile', get_string('editmyprofile'));
 
@@ -478,6 +527,7 @@ class renderer extends \core_user\output\myprofile\renderer {
             $misccontent .= $this->render($category);
             $misccontent .= html_writer::end_tag('div');
         }
+        $misccontent .= $this->userprofilefields();
         $misccontent .= html_writer::end_tag('div');
         $tab = new \stdClass;
         $tab->name = 'more';
