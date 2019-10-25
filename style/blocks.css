@@ -783,5 +783,5 @@ main.tabcontentcontainer {
 }
 /* Recently accessed courses block. */
 .block_recentlyaccessedcourses .paging-bar-container {
-    margin-top: -3.5rem; /* Pull up the next/previous so they work with block header coloured background. */
+    margin-top: -4rem; /* Pull up the next/previous so they work with block header coloured background. */
 }
