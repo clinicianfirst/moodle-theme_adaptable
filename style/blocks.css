@@ -60,18 +60,14 @@
     border-width: [[setting:blockheaderbordertop]] [[setting:blockheaderborderright]] [[setting:blockheaderborderbottom]] [[setting:blockheaderborderleft]];
     border-color: [[setting:blockbordercolor]];
     border-style: [[setting:blockheaderbordertopstyle]];
-    padding: 5px;
     border-radius: [[setting:blockheadertopradius]] [[setting:blockheadertopradius]] [[setting:blockheaderbottomradius]] [[setting:blockheaderbottomradius]];
+    padding: 1em;
 }
 
 /* Block header */
 .block .header,
 #dockeditempanel .dockeditempanel_hd {
     background: [[setting:blockheaderbackgroundcolor]];
-}
-
-.block .header {
-    padding-right: 0;
 }
 
 /* Block title */
@@ -783,5 +779,16 @@ main.tabcontentcontainer {
     #dashboardtabcontainer section.adaptable-tab-section {
         border: 0;
     }
+}
 
+/*
+* Dashboard main content blocks.
+*/
+/* Main content blocks on the dashboard */
+#block-region-content .block_action {
+    display: none; /* Hide minimise for these essential blocks. */
+}
+/* Recently accessed courses block. */
+.block_recentlyaccessedcourses .paging-bar-container {
+    margin-top: -3.5rem; /* Pull up the next/previous so they work with block header coloured background. */
 }
