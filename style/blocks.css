@@ -80,12 +80,6 @@
     text-transform: none;
 }
 
-.block .header .block_action {
-    margin: 0;
-    margin-top: -5px;
-}
-
-
 .block .header .action-menu {
     border: none !important;
     background-color: transparent !important;
@@ -101,14 +95,13 @@
     border-width: [[setting:blockmainbordertop]] [[setting:blockmainborderright]] [[setting:blockmainborderbottom]] [[setting:blockmainborderleft]];
     border-color: [[setting:blockbordercolor]];
     border-style: [[setting:blockmainbordertopstyle]];
-    padding: 10px 5px;
-    font-weight: normal;
     background: [[setting:blockbackgroundcolor]];
     border-radius: [[setting:blockmaintopradius]] [[setting:blockmaintopradius]] [[setting:blockmainbottomradius]] [[setting:blockmainbottomradius]];
+    padding: 1em;
 }
 
 .block-region-front .block .content {
-    padding: 10px 5px;
+    padding: 1em;
 }
 
 .block .content a,
