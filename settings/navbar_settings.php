@@ -137,7 +137,7 @@ if ($ADMIN->fulltree) {
     $default = true;
     $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
     $temp->add($setting);
-
+    
     $name = 'theme_adaptable/enablenavbarwhenloggedout';
     $title = get_string('enablenavbarwhenloggedout', 'theme_adaptable');
     $description = get_string('enablenavbarwhenloggedoutdesc', 'theme_adaptable');
@@ -151,18 +151,17 @@ if ($ADMIN->fulltree) {
     $title = get_string('editsettingsbutton', 'theme_adaptable');
     $description = get_string('editsettingsbuttondesc', 'theme_adaptable');
     $choices = array(
-        'cog' => get_string('editsettingsbuttonshowcog', 'theme_adaptable'),
         'button' => get_string('editsettingsbuttonshowbutton', 'theme_adaptable'),
         'cogandbutton' => get_string('editsettingsbuttonshowcogandbutton', 'theme_adaptable')
     );
-    $setting = new admin_setting_configselect($name, $title, $description, 'cog', $choices );
+    $setting = new admin_setting_configselect($name, $title, $description, 'cogandbutton', $choices );
     $setting->set_updatedcallback('theme_reset_all_caches');
     $temp->add($setting);
-
+    
     $name = 'theme_adaptable/displayeditingbuttontext';
     $title = get_string('displayeditingbuttontext', 'theme_adaptable');
     $description = get_string('displayeditingbuttontextdesc', 'theme_adaptable');
-    $default = true;
+    $default = false;
     $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
     $setting->set_updatedcallback('theme_reset_all_caches');
     $temp->add($setting);
