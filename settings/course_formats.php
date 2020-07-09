@@ -38,12 +38,6 @@ $temp->add(new admin_setting_heading('coursepagesidebarinfooterenabledsection',
 
 // Commonly used activities and resources.
 require_once($CFG->dirroot.'/course/lib.php');
-$name = 'theme_adaptable/commonlyusedar';
-$title = get_string('commonlyusedar', 'theme_adaptable');
-$description = get_string('commonlyusedardesc', 'theme_adaptable', '\''.implode(', ', array_keys(get_module_types_names())).'\'');
-$default = '';
-$setting = new admin_setting_configtextarea($name, $title, $description, $default);
-$temp->add($setting);
 
 $name = 'theme_adaptable/coursepagesidebarinfooterenabled';
 $title = get_string('coursepagesidebarinfooterenabled', 'theme_adaptable');
